@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>{{TITLE}}</title>
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: {
+    sans: ['Inter', 'ui-sans-serif', 'system-ui'], mono: ['JetBrains Mono', 'ui-monospace'] } } } };
+  // Chart.js defaults: monochrome, quiet
+  window.addEventListener('DOMContentLoaded', () => { if (!window.Chart) return;
+    Chart.defaults.locale = document.documentElement.lang; Chart.defaults.font.family = 'Inter'; Chart.defaults.color = '#737373';
+    Chart.defaults.borderColor = '#f0f0f0'; Chart.defaults.plugins.legend.labels.boxWidth = 10; });
+</script>
+</head>
+<body class="bg-white text-neutral-900 font-sans antialiased">
+  <main class="mx-auto {{WIDTH}} px-6 py-16">
+    <header class="mb-12 border-b border-neutral-200 pb-8">
+      <p class="font-mono text-xs uppercase tracking-widest text-neutral-500">{{EYEBROW}}</p>
+      <h1 class="mt-3 text-3xl font-semibold tracking-tight">{{TITLE}}</h1>
+      <p class="mt-3 text-neutral-600">{{SUBTITLE}}</p>
+    </header>
+
+    <!-- CONTENT -->
+
+    <footer class="mt-20 border-t border-neutral-200 pt-6 font-mono text-xs text-neutral-400">opencode artifacts · {{DATE}}</footer>
+  </main>
+</body>
+</html>

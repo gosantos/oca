@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Criminalidade em Vale Serrano, 2014–2025</title>
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: {
+    sans: ['Inter', 'ui-sans-serif', 'system-ui'], mono: ['JetBrains Mono', 'ui-monospace'] } } } };
+  // Chart.js defaults: monochrome, quiet
+  window.addEventListener('DOMContentLoaded', () => { if (!window.Chart) return;
+    Chart.defaults.font.family = 'Inter'; Chart.defaults.color = '#737373';
+    Chart.defaults.borderColor = '#f0f0f0'; Chart.defaults.plugins.legend.labels.boxWidth = 10; });
+</script>
+</head>
+<body class="bg-white text-neutral-900 font-sans antialiased">
+  <main class="mx-auto max-w-3xl px-6 py-16">
+    <header class="mb-12 border-b border-neutral-200 pb-8">
+      <p class="font-mono text-xs uppercase tracking-widest text-neutral-500">Pesquisa · Dados fictícios</p>
+      <h1 class="mt-3 text-3xl font-semibold tracking-tight">Criminalidade em Vale Serrano, 2014–2025</h1>
+      <p class="mt-3 text-neutral-600">Doze anos de registros policiais numa cidade média de 480 mil habitantes.</p>
+    </header>
+
+    <div class="grid grid-cols-3 divide-x divide-neutral-200 border-y border-neutral-200">
+<div class="px-4 py-6 first:pl-0"><p class="text-3xl font-semibold tabular-nums">−29%</p><p class="mt-1 text-sm text-neutral-500">roubos desde 2016</p></div><div class="px-4 py-6 first:pl-0"><p class="text-3xl font-semibold tabular-nums">214</p><p class="mt-1 text-sm text-neutral-500">homicídios em 2025</p></div><div class="px-4 py-6 first:pl-0"><p class="text-3xl font-semibold tabular-nums">44,6</p><p class="mt-1 text-sm text-neutral-500">por 100 mil hab.</p></div></div>
+<h2 class="mt-14 mb-4 font-mono text-xs uppercase tracking-widest text-neutral-500">Roubos registrados por ano</h2><canvas id="c1" height="120"></canvas>
+<p class="mt-4 text-neutral-600">O pico de 2016 coincide com a crise econômica regional. A queda brusca de 2020 reflete a circulação reduzida durante a pandemia, seguida de uma recuperação parcial.</p>
+<h2 class="mt-14 mb-4 font-mono text-xs uppercase tracking-widest text-neutral-500">Homicídios</h2><canvas id="c2" height="110"></canvas>
+<h2 class="mt-14 mb-4 font-mono text-xs uppercase tracking-widest text-neutral-500">Tabela completa</h2>
+<table class="w-full text-sm tabular-nums"><thead class="text-left text-neutral-500"><tr class="border-b border-neutral-200"><th class="py-2 font-medium">Ano</th><th class="py-2 text-right font-medium">Roubos</th><th class="py-2 text-right font-medium">Homicídios</th><th class="py-2 text-right font-medium">Var. roubos</th></tr></thead>
+<tbody class="divide-y divide-neutral-100"><tr><td class="py-2">2014</td><td class="py-2 text-right">8.420</td><td class="py-2 text-right">312</td><td class="py-2 text-right text-neutral-300">—</td></tr><tr><td class="py-2">2015</td><td class="py-2 text-right">8.910</td><td class="py-2 text-right">334</td><td class="py-2 text-right text-red-600">+5.8%</td></tr><tr><td class="py-2">2016</td><td class="py-2 text-right">9.350</td><td class="py-2 text-right">351</td><td class="py-2 text-right text-red-600">+4.9%</td></tr><tr><td class="py-2">2017</td><td class="py-2 text-right">9.120</td><td class="py-2 text-right">329</td><td class="py-2 text-right text-emerald-600">-2.5%</td></tr><tr><td class="py-2">2018</td><td class="py-2 text-right">8.640</td><td class="py-2 text-right">298</td><td class="py-2 text-right text-emerald-600">-5.3%</td></tr><tr><td class="py-2">2019</td><td class="py-2 text-right">8.010</td><td class="py-2 text-right">276</td><td class="py-2 text-right text-emerald-600">-7.3%</td></tr><tr><td class="py-2">2020</td><td class="py-2 text-right">6.230</td><td class="py-2 text-right">259</td><td class="py-2 text-right text-emerald-600">-22.2%</td></tr><tr><td class="py-2">2021</td><td class="py-2 text-right">6.880</td><td class="py-2 text-right">281</td><td class="py-2 text-right text-red-600">+10.4%</td></tr><tr><td class="py-2">2022</td><td class="py-2 text-right">7.120</td><td class="py-2 text-right">265</td><td class="py-2 text-right text-red-600">+3.5%</td></tr><tr><td class="py-2">2023</td><td class="py-2 text-right">6.740</td><td class="py-2 text-right">241</td><td class="py-2 text-right text-emerald-600">-5.3%</td></tr><tr><td class="py-2">2024</td><td class="py-2 text-right">6.310</td><td class="py-2 text-right">228</td><td class="py-2 text-right text-emerald-600">-6.4%</td></tr><tr><td class="py-2">2025</td><td class="py-2 text-right">5.980</td><td class="py-2 text-right">214</td><td class="py-2 text-right text-emerald-600">-5.2%</td></tr></tbody></table>
+<p class="mt-8 font-mono text-xs text-neutral-400">Fonte: dados gerados para teste.</p>
+<script>addEventListener('load',()=>{
+new Chart(c1,{type:'line',data:{labels:[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],datasets:[{data:[8420,8910,9350,9120,8640,8010,6230,6880,7120,6740,6310,5980],borderColor:'#171717',borderWidth:1.5,pointRadius:0,tension:.3,fill:true,backgroundColor:'rgba(23,23,23,.04)'}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false}}}}});
+new Chart(c2,{type:'bar',data:{labels:[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],datasets:[{data:[312,334,351,329,298,276,259,281,265,241,228,214],backgroundColor:["#d4d4d4","#d4d4d4","#d4d4d4","#d4d4d4","#d4d4d4","#d4d4d4","#d4d4d4","#d4d4d4","#d4d4d4","#d4d4d4","#d4d4d4","#171717"],borderRadius:2}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false}}}}});});</script>
+
+    <footer class="mt-20 border-t border-neutral-200 pt-6 font-mono text-xs text-neutral-400">opencode artifacts · 08 nov 2026</footer>
+  </main>
+</body>
+</html>

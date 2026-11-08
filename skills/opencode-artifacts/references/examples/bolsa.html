@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>B3 hoje: quem subiu, quem caiu</title>
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: {
+    sans: ['Inter', 'ui-sans-serif', 'system-ui'], mono: ['JetBrains Mono', 'ui-monospace'] } } } };
+  // Chart.js defaults: monochrome, quiet
+  window.addEventListener('DOMContentLoaded', () => { if (!window.Chart) return;
+    Chart.defaults.font.family = 'Inter'; Chart.defaults.color = '#737373';
+    Chart.defaults.borderColor = '#f0f0f0'; Chart.defaults.plugins.legend.labels.boxWidth = 10; });
+</script>
+</head>
+<body class="bg-white text-neutral-900 font-sans antialiased">
+  <main class="mx-auto max-w-5xl px-6 py-16">
+    <header class="mb-12 border-b border-neutral-200 pb-8">
+      <p class="font-mono text-xs uppercase tracking-widest text-neutral-500">Mercado · Fechamento</p>
+      <h1 class="mt-3 text-3xl font-semibold tracking-tight">B3 hoje: quem subiu, quem caiu</h1>
+      <p class="mt-3 text-neutral-600">Resumo do pregão com as maiores variações do Ibovespa. Valores fictícios.</p>
+    </header>
+
+    <div class="grid grid-cols-2 gap-px bg-neutral-200 border border-neutral-200 md:grid-cols-4">
+<div class="bg-white p-5"><p class="font-mono text-xs uppercase tracking-wider text-neutral-500">Ibovespa</p><p class="mt-2 text-2xl font-semibold tabular-nums">135.266</p><p class="mt-1 text-sm text-emerald-600">+0,84%</p></div><div class="bg-white p-5"><p class="font-mono text-xs uppercase tracking-wider text-neutral-500">Dólar</p><p class="mt-2 text-2xl font-semibold tabular-nums">R$ 5,42</p><p class="mt-1 text-sm text-red-600">−0,31%</p></div><div class="bg-white p-5"><p class="font-mono text-xs uppercase tracking-wider text-neutral-500">Volume</p><p class="mt-2 text-2xl font-semibold tabular-nums">R$ 24,1 bi</p><p class="mt-1 text-sm text-emerald-600">+12%</p></div><div class="bg-white p-5"><p class="font-mono text-xs uppercase tracking-wider text-neutral-500">Selic</p><p class="mt-2 text-2xl font-semibold tabular-nums">10,50%</p><p class="mt-1 text-sm text-neutral-500">estável</p></div></div>
+<h2 class="mt-14 mb-4 font-mono text-xs uppercase tracking-widest text-neutral-500">Ibovespa · 60 pregões</h2><canvas id="c" height="90"></canvas>
+<div class="mt-14 grid gap-12 md:grid-cols-2"><section><h2 class="mt-0 mb-4 font-mono text-xs uppercase tracking-widest text-neutral-500">Maiores altas</h2><table class="w-full text-sm tabular-nums"><tbody class="divide-y divide-neutral-100"><tr><td class="py-2.5"><span class="font-mono font-medium">WEGE3</span><span class="ml-2 text-neutral-500">WEG</span></td><td class="py-2.5 text-right">R$ 58,40</td><td class="py-2.5 w-20 text-right font-medium text-emerald-600">+4,8%</td></tr><tr><td class="py-2.5"><span class="font-mono font-medium">PETR4</span><span class="ml-2 text-neutral-500">Petrobras</span></td><td class="py-2.5 text-right">R$ 39,10</td><td class="py-2.5 w-20 text-right font-medium text-emerald-600">+3,2%</td></tr><tr><td class="py-2.5"><span class="font-mono font-medium">ITUB4</span><span class="ml-2 text-neutral-500">Itaú</span></td><td class="py-2.5 text-right">R$ 36,70</td><td class="py-2.5 w-20 text-right font-medium text-emerald-600">+2,1%</td></tr><tr><td class="py-2.5"><span class="font-mono font-medium">RENT3</span><span class="ml-2 text-neutral-500">Localiza</span></td><td class="py-2.5 text-right">R$ 52,30</td><td class="py-2.5 w-20 text-right font-medium text-emerald-600">+1,9%</td></tr><tr><td class="py-2.5"><span class="font-mono font-medium">SUZB3</span><span class="ml-2 text-neutral-500">Suzano</span></td><td class="py-2.5 text-right">R$ 55,80</td><td class="py-2.5 w-20 text-right font-medium text-emerald-600">+1,4%</td></tr></tbody></table></section><section><h2 class="mt-0 mb-4 font-mono text-xs uppercase tracking-widest text-neutral-500">Maiores baixas</h2><table class="w-full text-sm tabular-nums"><tbody class="divide-y divide-neutral-100"><tr><td class="py-2.5"><span class="font-mono font-medium">MGLU3</span><span class="ml-2 text-neutral-500">Magazine Luiza</span></td><td class="py-2.5 text-right">R$ 9,10</td><td class="py-2.5 w-20 text-right font-medium text-red-600">-6,3%</td></tr><tr><td class="py-2.5"><span class="font-mono font-medium">VALE3</span><span class="ml-2 text-neutral-500">Vale</span></td><td class="py-2.5 text-right">R$ 61,20</td><td class="py-2.5 w-20 text-right font-medium text-red-600">-3,4%</td></tr><tr><td class="py-2.5"><span class="font-mono font-medium">CSNA3</span><span class="ml-2 text-neutral-500">CSN</span></td><td class="py-2.5 text-right">R$ 11,40</td><td class="py-2.5 w-20 text-right font-medium text-red-600">-2,9%</td></tr><tr><td class="py-2.5"><span class="font-mono font-medium">AZUL4</span><span class="ml-2 text-neutral-500">Azul</span></td><td class="py-2.5 text-right">R$ 6,80</td><td class="py-2.5 w-20 text-right font-medium text-red-600">-2,5%</td></tr><tr><td class="py-2.5"><span class="font-mono font-medium">BBDC4</span><span class="ml-2 text-neutral-500">Bradesco</span></td><td class="py-2.5 text-right">R$ 14,20</td><td class="py-2.5 w-20 text-right font-medium text-red-600">-1,7%</td></tr></tbody></table></section></div>
+<h2 class="mt-14 mb-4 font-mono text-xs uppercase tracking-widest text-neutral-500">Variação por ação</h2><canvas id="d" height="80"></canvas>
+<script>addEventListener('load',()=>{
+new Chart(c,{type:'line',data:{labels:["D1","D2","D3","D4","D5","D6","D7","D8","D9","D10","D11","D12","D13","D14","D15","D16","D17","D18","D19","D20","D21","D22","D23","D24","D25","D26","D27","D28","D29","D30","D31","D32","D33","D34","D35","D36","D37","D38","D39","D40","D41","D42","D43","D44","D45","D46","D47","D48","D49","D50","D51","D52","D53","D54","D55","D56","D57","D58","D59","D60"],datasets:[{data:[127690,128216,128119,128246,128744,129549,130201,131249,131827,132840,133038,133918,134201,134705,135166,135296,135445,135328,135559,135067,134888,134484,133683,133355,133079,132772,132198,131540,131382,131450,131573,131808,131558,131529,132243,133127,133772,134262,134749,134979,135964,136821,137708,138282,138523,138862,139291,139255,139275,138782,138296,137874,137470,136615,136537,135996,135595,135516,135428,135266],borderColor:'#171717',borderWidth:1.5,pointRadius:0,tension:.2}]},options:{plugins:{legend:{display:false}},scales:{x:{display:false}}}});
+const all=[["WEGE3","WEG",58.4,4.8],["PETR4","Petrobras",39.1,3.2],["ITUB4","Itaú",36.7,2.1],["RENT3","Localiza",52.3,1.9],["SUZB3","Suzano",55.8,1.4],["BBDC4","Bradesco",14.2,-1.7],["AZUL4","Azul",6.8,-2.5],["CSNA3","CSN",11.4,-2.9],["VALE3","Vale",61.2,-3.4],["MGLU3","Magazine Luiza",9.1,-6.3]];
+new Chart(d,{type:'bar',data:{labels:all.map(r=>r[0]),datasets:[{data:all.map(r=>r[3]),backgroundColor:all.map(r=>r[3]<0?'#dc2626':'#059669'),borderRadius:2}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false}}}}});});</script>
+
+    <footer class="mt-20 border-t border-neutral-200 pt-6 font-mono text-xs text-neutral-400">opencode artifacts · 08 nov 2026</footer>
+  </main>
+</body>
+</html>
