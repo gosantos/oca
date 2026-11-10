@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>On tools that disappear</title>
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Non-Latin pages: add the Noto Sans stylesheet for the script here (see SKILL.md, "Languages") -->
+<script>
+  // Fallback stack covers every script the skill supports; the browser picks the first font with the glyphs.
+  const scriptFonts = ['Noto Sans SC', 'Noto Sans JP', 'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Arabic',
+    'PingFang SC', 'Hiragino Sans', 'Microsoft YaHei', 'Yu Gothic', 'Nirmala UI', 'Segoe UI', 'Geeza Pro'];
+  tailwind.config = { theme: { extend: { fontFamily: {
+    sans: ['Inter', ...scriptFonts, 'ui-sans-serif', 'system-ui', 'sans-serif'],
+    mono: ['JetBrains Mono', 'ui-monospace', ...scriptFonts, 'monospace'] } } } };
+  // Chart.js defaults: monochrome, quiet, localized
+  window.addEventListener('DOMContentLoaded', () => { if (!window.Chart) return;
+    const font = getComputedStyle(document.body).fontFamily;
+    Chart.defaults.locale = document.documentElement.lang; Chart.defaults.font.family = font; Chart.defaults.color = '#737373';
+    Chart.defaults.borderColor = '#f0f0f0'; Chart.defaults.plugins.legend.labels.boxWidth = 10;
+    if (document.documentElement.dir === 'rtl') { Chart.defaults.plugins.legend.rtl = true; Chart.defaults.plugins.tooltip.rtl = true; } });
+</script>
+</head>
+<body class="bg-white text-neutral-900 font-sans antialiased">
+  <main class="mx-auto max-w-3xl px-6 py-16">
+    <header class="mb-12 border-b border-neutral-200 pb-8">
+      <p class="font-mono text-xs uppercase tracking-widest text-neutral-500">Essay · 6 min</p>
+      <h1 class="mt-3 text-3xl font-semibold tracking-tight">On tools that disappear</h1>
+      <p class="mt-3 text-neutral-600">Why the best interfaces are the ones we forget are there.</p>
+    </header>
+
+    <article class="prose prose-neutral max-w-none prose-headings:tracking-tight prose-a:underline-offset-4">
+<p class="lead">A good tool vanishes the moment you start using it. The hammer stops being a hammer and becomes an extension of your arm; the text editor becomes just the text.</p>
+<h2>The cost of attention</h2>
+<p>Every element on a screen asks for a little attention. One more button, one more color, an animation nobody asked for. Alone they seem harmless. Together they turn work into noise.</p>
+<blockquote>Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.</blockquote>
+<p>Antoine de Saint-Exupéry wrote that about airplanes, but it holds for anything someone has to use every day.</p>
+<h2>Three signs of excess</h2>
+<ol><li>You have to explain where a feature lives.</li><li>The screen has more than one focal point.</li><li>The user asks "what does this do?" before "how do I do this?".</li></ol>
+<h2>In practice</h2>
+<p>Start with text. Add structure only when the text asks for it. Use <code>one color</code> for one thing. If everything is highlighted, nothing is.</p>
+<hr><p class="text-sm text-neutral-500">Written as a test of the long-form reading layout.</p></article>
+
+    <footer class="mt-20 border-t border-neutral-200 pt-6 font-mono text-xs text-neutral-400">opencode artifacts · Nov 8, 2026</footer>
+  </main>
+</body>
+</html>

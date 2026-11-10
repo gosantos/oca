@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="{{LANG}}" dir="{{DIR}}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,13 +9,20 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Non-Latin pages: add the Noto Sans stylesheet for the script here (see SKILL.md, "Languages") -->
 <script>
+  // Fallback stack covers every script the skill supports; the browser picks the first font with the glyphs.
+  const scriptFonts = ['Noto Sans SC', 'Noto Sans JP', 'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Arabic',
+    'PingFang SC', 'Hiragino Sans', 'Microsoft YaHei', 'Yu Gothic', 'Nirmala UI', 'Segoe UI', 'Geeza Pro'];
   tailwind.config = { theme: { extend: { fontFamily: {
-    sans: ['Inter', 'ui-sans-serif', 'system-ui'], mono: ['JetBrains Mono', 'ui-monospace'] } } } };
-  // Chart.js defaults: monochrome, quiet
+    sans: ['Inter', ...scriptFonts, 'ui-sans-serif', 'system-ui', 'sans-serif'],
+    mono: ['JetBrains Mono', 'ui-monospace', ...scriptFonts, 'monospace'] } } } };
+  // Chart.js defaults: monochrome, quiet, localized
   window.addEventListener('DOMContentLoaded', () => { if (!window.Chart) return;
-    Chart.defaults.locale = document.documentElement.lang; Chart.defaults.font.family = 'Inter'; Chart.defaults.color = '#737373';
-    Chart.defaults.borderColor = '#f0f0f0'; Chart.defaults.plugins.legend.labels.boxWidth = 10; });
+    const font = getComputedStyle(document.body).fontFamily;
+    Chart.defaults.locale = document.documentElement.lang; Chart.defaults.font.family = font; Chart.defaults.color = '#737373';
+    Chart.defaults.borderColor = '#f0f0f0'; Chart.defaults.plugins.legend.labels.boxWidth = 10;
+    if (document.documentElement.dir === 'rtl') { Chart.defaults.plugins.legend.rtl = true; Chart.defaults.plugins.tooltip.rtl = true; } });
 </script>
 </head>
 <body class="bg-white text-neutral-900 font-sans antialiased">

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Crime in Ridgeview, 2014–2025</title>
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Non-Latin pages: add the Noto Sans stylesheet for the script here (see SKILL.md, "Languages") -->
+<script>
+  // Fallback stack covers every script the skill supports; the browser picks the first font with the glyphs.
+  const scriptFonts = ['Noto Sans SC', 'Noto Sans JP', 'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Arabic',
+    'PingFang SC', 'Hiragino Sans', 'Microsoft YaHei', 'Yu Gothic', 'Nirmala UI', 'Segoe UI', 'Geeza Pro'];
+  tailwind.config = { theme: { extend: { fontFamily: {
+    sans: ['Inter', ...scriptFonts, 'ui-sans-serif', 'system-ui', 'sans-serif'],
+    mono: ['JetBrains Mono', 'ui-monospace', ...scriptFonts, 'monospace'] } } } };
+  // Chart.js defaults: monochrome, quiet, localized
+  window.addEventListener('DOMContentLoaded', () => { if (!window.Chart) return;
+    const font = getComputedStyle(document.body).fontFamily;
+    Chart.defaults.locale = document.documentElement.lang; Chart.defaults.font.family = font; Chart.defaults.color = '#737373';
+    Chart.defaults.borderColor = '#f0f0f0'; Chart.defaults.plugins.legend.labels.boxWidth = 10;
+    if (document.documentElement.dir === 'rtl') { Chart.defaults.plugins.legend.rtl = true; Chart.defaults.plugins.tooltip.rtl = true; } });
+</script>
+</head>
+<body class="bg-white text-neutral-900 font-sans antialiased">
+  <main class="mx-auto max-w-3xl px-6 py-16">
+    <header class="mb-12 border-b border-neutral-200 pb-8">
+      <p class="font-mono text-xs uppercase tracking-widest text-neutral-500">Research · Fictional data</p>
+      <h1 class="mt-3 text-3xl font-semibold tracking-tight">Crime in Ridgeview, 2014–2025</h1>
+      <p class="mt-3 text-neutral-600">Twelve years of police records in a mid-sized city of 480,000 people.</p>
+    </header>
+
+    <div class="grid grid-cols-3 divide-x divide-neutral-200 border-y border-neutral-200">
+<div class="px-4 py-6 first:ps-0"><p class="text-3xl font-semibold tabular-nums">−29%</p><p class="mt-1 text-sm text-neutral-500">robberies since 2016</p></div><div class="px-4 py-6 first:ps-0"><p class="text-3xl font-semibold tabular-nums">214</p><p class="mt-1 text-sm text-neutral-500">homicides in 2025</p></div><div class="px-4 py-6 first:ps-0"><p class="text-3xl font-semibold tabular-nums">44.6</p><p class="mt-1 text-sm text-neutral-500">per 100k residents</p></div></div>
+<h2 class="mt-14 mb-4 font-mono text-xs uppercase tracking-widest text-neutral-500">Reported robberies per year</h2><canvas id="c1" height="120"></canvas>
+<p class="mt-4 text-neutral-600">The 2016 peak lines up with the regional economic downturn. The sharp drop in 2020 reflects reduced movement during the pandemic, followed by a partial rebound.</p>
+<h2 class="mt-14 mb-4 font-mono text-xs uppercase tracking-widest text-neutral-500">Homicides</h2><canvas id="c2" height="110"></canvas>
+<h2 class="mt-14 mb-4 font-mono text-xs uppercase tracking-widest text-neutral-500">Full table</h2>
+<table class="w-full text-sm tabular-nums"><thead class="text-start text-neutral-500"><tr class="border-b border-neutral-200"><th class="py-2 font-medium">Year</th><th class="py-2 text-end font-medium">Robberies</th><th class="py-2 text-end font-medium">Homicides</th><th class="py-2 text-end font-medium">Robbery change</th></tr></thead>
+<tbody class="divide-y divide-neutral-100"><tr><td class="py-2">2014</td><td class="py-2 text-end">8,420</td><td class="py-2 text-end">312</td><td class="py-2 text-end text-neutral-300">—</td></tr><tr><td class="py-2">2015</td><td class="py-2 text-end">8,910</td><td class="py-2 text-end">334</td><td class="py-2 text-end text-red-600">+5.8%</td></tr><tr><td class="py-2">2016</td><td class="py-2 text-end">9,350</td><td class="py-2 text-end">351</td><td class="py-2 text-end text-red-600">+4.9%</td></tr><tr><td class="py-2">2017</td><td class="py-2 text-end">9,120</td><td class="py-2 text-end">329</td><td class="py-2 text-end text-emerald-600">-2.5%</td></tr><tr><td class="py-2">2018</td><td class="py-2 text-end">8,640</td><td class="py-2 text-end">298</td><td class="py-2 text-end text-emerald-600">-5.3%</td></tr><tr><td class="py-2">2019</td><td class="py-2 text-end">8,010</td><td class="py-2 text-end">276</td><td class="py-2 text-end text-emerald-600">-7.3%</td></tr><tr><td class="py-2">2020</td><td class="py-2 text-end">6,230</td><td class="py-2 text-end">259</td><td class="py-2 text-end text-emerald-600">-22.2%</td></tr><tr><td class="py-2">2021</td><td class="py-2 text-end">6,880</td><td class="py-2 text-end">281</td><td class="py-2 text-end text-red-600">+10.4%</td></tr><tr><td class="py-2">2022</td><td class="py-2 text-end">7,120</td><td class="py-2 text-end">265</td><td class="py-2 text-end text-red-600">+3.5%</td></tr><tr><td class="py-2">2023</td><td class="py-2 text-end">6,740</td><td class="py-2 text-end">241</td><td class="py-2 text-end text-emerald-600">-5.3%</td></tr><tr><td class="py-2">2024</td><td class="py-2 text-end">6,310</td><td class="py-2 text-end">228</td><td class="py-2 text-end text-emerald-600">-6.4%</td></tr><tr><td class="py-2">2025</td><td class="py-2 text-end">5,980</td><td class="py-2 text-end">214</td><td class="py-2 text-end text-emerald-600">-5.2%</td></tr></tbody></table>
+<p class="mt-8 font-mono text-xs text-neutral-400">Source: data generated for testing.</p>
+<script>addEventListener('load',()=>{
+new Chart(c1,{type:'line',data:{labels:[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],datasets:[{data:[8420,8910,9350,9120,8640,8010,6230,6880,7120,6740,6310,5980],borderColor:'#171717',borderWidth:1.5,pointRadius:0,tension:.3,fill:true,backgroundColor:'rgba(23,23,23,.04)'}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false}}}}});
+new Chart(c2,{type:'bar',data:{labels:[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025],datasets:[{data:[312,334,351,329,298,276,259,281,265,241,228,214],backgroundColor:["#d4d4d4","#d4d4d4","#d4d4d4","#d4d4d4","#d4d4d4","#d4d4d4","#d4d4d4","#d4d4d4","#d4d4d4","#d4d4d4","#d4d4d4","#171717"],borderRadius:2}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false}}}}});});</script>
+
+    <footer class="mt-20 border-t border-neutral-200 pt-6 font-mono text-xs text-neutral-400">opencode artifacts · Nov 8, 2026</footer>
+  </main>
+</body>
+</html>

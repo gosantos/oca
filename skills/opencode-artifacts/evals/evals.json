@@ -1,0 +1,100 @@
+{
+  "skill_name": "opencode-artifacts",
+  "languages": ["en", "zh-CN", "hi", "es", "fr", "ar", "bn", "ru", "ja", "de"],
+  "common_assertions": [
+    "Page is at ${TMPDIR:-/tmp}/opencode-artifacts/site/<slug>/index.html with a kebab-case ASCII slug",
+    "No {{PLACEHOLDER}} tokens are left from assets/base.html",
+    "<html lang> and dir match the Languages table in SKILL.md",
+    "Non-Latin pages (zh-CN, ja, hi, bn, ar) load the matching Noto Sans stylesheet",
+    "Non-Latin pages put no uppercase or tracking-widest/tracking-wider classes on text",
+    "Uses logical classes: no text-right/text-left, pl-/pr-/ml-/mr-, border-l/border-r",
+    "Only emerald-600 and red-600 are used as accent colors; no shadows, gradients or emoji",
+    "All internal links are relative (no href starting with /)",
+    "site/index.html links to the page with a relative href",
+    "The reply gives BASE/<slug>/; that URL returns 200 and the same path without the secret returns 404",
+    "Visible text is in the prompt's language"
+  ],
+  "evals": [
+    {
+      "id": 1,
+      "name": "en-signups-dashboard",
+      "lang": "en",
+      "prompt": "Here are our monthly signups for 2026: Jan 1200, Feb 1350, Mar 1100, Apr 1600, May 1900, Jun 2100, Jul 2050, Aug 2400, Sep 2600, Oct 2900. Make me a small dashboard with a line chart and the month-over-month change, and send me a link I can open on my phone.",
+      "expected_output": "Dashboard (max-w-5xl) with a Chart.js line chart and a MoM table, numbers like 1,200.",
+      "assertions": ["Uses max-w-5xl", "Has a Chart.js line chart created inside a load listener", "MoM increases are emerald-600 and decreases red-600"]
+    },
+    {
+      "id": 2,
+      "name": "zh-cloud-comparison",
+      "lang": "zh-CN",
+      "prompt": "帮我做一个页面，对比一下阿里云、腾讯云和华为云，适合一个十人左右的创业团队：价格、稳定性、文档质量、海外节点。最后给个推荐，发我链接。",
+      "expected_output": "Comparison page in Simplified Chinese with a recommendation callout and a feature table, Noto Sans SC loaded.",
+      "assertions": ["Loads Noto Sans SC", "Has a recommendation callout using border-s-2", "Has a comparison table"]
+    },
+    {
+      "id": 3,
+      "name": "hi-monsoon-report",
+      "lang": "hi",
+      "prompt": "पिछले 10 साल (2015–2024) में भारत में मानसून की बारिश सामान्य से कितनी कम या ज़्यादा रही, इस पर एक छोटी रिपोर्ट बनाओ, चार्ट के साथ। अनुमानित आँकड़े चलेंगे। मुझे लिंक भेज दो।",
+      "expected_output": "Hindi data report with a chart, Noto Sans Devanagari loaded, numbers formatted for hi.",
+      "assertions": ["Loads Noto Sans Devanagari", "Has a chart", "Labels the figures as estimates"]
+    },
+    {
+      "id": 4,
+      "name": "es-incident-brief",
+      "lang": "es",
+      "prompt": "Anoche se cayó el checkout: a las 02:14 falló la réplica principal de la base de datos, hubo 23 minutos de errores 500 y la causa fue un pool de conexiones que no se renovó. Hazme un informe del incidente con la cronología y los próximos pasos, y pásame el link.",
+      "expected_output": "Incident brief in Spanish with key-value header, timeline and action list.",
+      "assertions": ["Has a vertical timeline with the 02:14 event", "Has a next-steps list"]
+    },
+    {
+      "id": 5,
+      "name": "fr-longform-essay",
+      "lang": "fr",
+      "prompt": "Écris un texte assez long sur pourquoi le télétravail a changé la façon dont les équipes logicielles communiquent, et envoie-moi le lien pour que je le lise plus tard.",
+      "expected_output": "Long-form French essay in a prose article at max-w-3xl.",
+      "assertions": ["Text is wrapped in <article class=\"prose prose-neutral max-w-none\">", "Uses max-w-3xl"]
+    },
+    {
+      "id": 6,
+      "name": "ar-sales-dashboard",
+      "lang": "ar",
+      "prompt": "عندي مبيعات ربع سنوية لمتجري الإلكتروني: الربع الأول 120 ألف ريال، الثاني 135 ألف، الثالث 128 ألف، الرابع 162 ألف. اعمل لي لوحة بسيطة فيها رسم بياني ونسبة التغير، وأرسل لي الرابط.",
+      "expected_output": "Right-to-left Arabic dashboard with a chart, Noto Sans Arabic, mirrored layout.",
+      "assertions": ["<html dir=\"rtl\">", "Loads Noto Sans Arabic", "Chart x-axis uses reverse: true", "Quarter-over-quarter changes are colored green/red"]
+    },
+    {
+      "id": 7,
+      "name": "bn-study-plan",
+      "lang": "bn",
+      "prompt": "আমার বিশ্ববিদ্যালয়ের ভর্তি পরীক্ষার জন্য ৮ সপ্তাহের একটা পড়ার পরিকল্পনা বানিয়ে দাও (গণিত, পদার্থবিজ্ঞান, রসায়ন, ইংরেজি), একটা পেজ হিসেবে, লিংক পাঠাও।",
+      "expected_output": "Bengali page with an 8-week plan table, Noto Sans Bengali loaded.",
+      "assertions": ["Loads Noto Sans Bengali", "Has a table or list covering all 8 weeks and 4 subjects"]
+    },
+    {
+      "id": 8,
+      "name": "ru-currency-report",
+      "lang": "ru",
+      "prompt": "Сделай страницу с графиком курса рубля к доллару по месяцам за 2025 год (можно примерные значения) и коротким выводом. Пришли ссылку.",
+      "expected_output": "Russian report with a line chart and a short conclusion; numbers formatted as 1 234,5.",
+      "assertions": ["Has a line chart", "Numbers use ru-RU formatting (comma decimal)", "Values are marked as approximate"]
+    },
+    {
+      "id": 9,
+      "name": "ja-meeting-notes",
+      "lang": "ja",
+      "prompt": "今日の定例ミーティングのメモをページにまとめて、リンクを送って。決定事項：リリースは11月20日に延期。担当：田中さんがQA、佐藤さんがリリースノート。懸念点：決済APIのレート制限。",
+      "expected_output": "Japanese brief with decisions, owners and concerns, Noto Sans JP loaded.",
+      "assertions": ["Loads Noto Sans JP", "Lists both owners and the 11月20日 date"]
+    },
+    {
+      "id": 10,
+      "name": "de-add-to-existing-link",
+      "lang": "de",
+      "setup": "Publish any page first so a tunnel is already running and record BASE.",
+      "prompt": "Ich habe den Link von vorhin schon an mein Team geschickt. Füg bitte eine zweite Seite hinzu, die Postgres, MySQL und SQLite für ein kleines SaaS vergleicht (Kosten, Betriebsaufwand, Skalierung, Tooling), und gib mir den Link.",
+      "expected_output": "German comparison page added under the existing tunnel; same BASE, no restart.",
+      "assertions": ["stop.sh is not run and the tunnel is not restarted", "Returned link starts with the BASE recorded in setup", "site/index.html lists both pages"]
+    }
+  ]
+}

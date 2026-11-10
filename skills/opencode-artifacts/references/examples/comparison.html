@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Which plan to pick</title>
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Non-Latin pages: add the Noto Sans stylesheet for the script here (see SKILL.md, "Languages") -->
+<script>
+  // Fallback stack covers every script the skill supports; the browser picks the first font with the glyphs.
+  const scriptFonts = ['Noto Sans SC', 'Noto Sans JP', 'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Arabic',
+    'PingFang SC', 'Hiragino Sans', 'Microsoft YaHei', 'Yu Gothic', 'Nirmala UI', 'Segoe UI', 'Geeza Pro'];
+  tailwind.config = { theme: { extend: { fontFamily: {
+    sans: ['Inter', ...scriptFonts, 'ui-sans-serif', 'system-ui', 'sans-serif'],
+    mono: ['JetBrains Mono', 'ui-monospace', ...scriptFonts, 'monospace'] } } } };
+  // Chart.js defaults: monochrome, quiet, localized
+  window.addEventListener('DOMContentLoaded', () => { if (!window.Chart) return;
+    const font = getComputedStyle(document.body).fontFamily;
+    Chart.defaults.locale = document.documentElement.lang; Chart.defaults.font.family = font; Chart.defaults.color = '#737373';
+    Chart.defaults.borderColor = '#f0f0f0'; Chart.defaults.plugins.legend.labels.boxWidth = 10;
+    if (document.documentElement.dir === 'rtl') { Chart.defaults.plugins.legend.rtl = true; Chart.defaults.plugins.tooltip.rtl = true; } });
+</script>
+</head>
+<body class="bg-white text-neutral-900 font-sans antialiased">
+  <main class="mx-auto max-w-3xl px-6 py-16">
+    <header class="mb-12 border-b border-neutral-200 pb-8">
+      <p class="font-mono text-xs uppercase tracking-widest text-neutral-500">Decision · Comparison</p>
+      <h1 class="mt-3 text-3xl font-semibold tracking-tight">Which plan to pick</h1>
+      <p class="mt-3 text-neutral-600">Three options side by side and a straight recommendation.</p>
+    </header>
+
+    <div class="border-s-2 border-neutral-900 ps-5"><p class="font-mono text-xs uppercase tracking-widest text-neutral-500">Recommendation</p><p class="mt-2 text-lg">The <strong>Team</strong> plan. It covers 90% of cases at a quarter of the cost of Enterprise.</p></div>
+<h2 class="mt-14 mb-4 font-mono text-xs uppercase tracking-widest text-neutral-500">Features</h2>
+<table class="w-full text-sm"><thead><tr class="border-b border-neutral-900 text-start"><th class="py-3 font-medium"></th><th class="py-3 text-end font-semibold ">Free</th><th class="py-3 text-end font-semibold underline underline-offset-8 decoration-2">Team</th><th class="py-3 text-end font-semibold ">Enterprise</th></tr></thead>
+<tbody class="divide-y divide-neutral-100"><tr><td class="py-3 text-neutral-500">Monthly price</td><td class="py-3 text-end tabular-nums ">$0</td><td class="py-3 text-end tabular-nums ">$49</td><td class="py-3 text-end tabular-nums ">$199</td></tr><tr><td class="py-3 text-neutral-500">Users</td><td class="py-3 text-end tabular-nums ">1</td><td class="py-3 text-end tabular-nums ">5</td><td class="py-3 text-end tabular-nums ">Unlimited</td></tr><tr><td class="py-3 text-neutral-500">Storage</td><td class="py-3 text-end tabular-nums ">2 GB</td><td class="py-3 text-end tabular-nums ">100 GB</td><td class="py-3 text-end tabular-nums ">2 TB</td></tr><tr><td class="py-3 text-neutral-500">API</td><td class="py-3 text-end tabular-nums text-neutral-300">—</td><td class="py-3 text-end tabular-nums ">✓</td><td class="py-3 text-end tabular-nums ">✓</td></tr><tr><td class="py-3 text-neutral-500">SSO</td><td class="py-3 text-end tabular-nums text-neutral-300">—</td><td class="py-3 text-end tabular-nums text-neutral-300">—</td><td class="py-3 text-end tabular-nums ">✓</td></tr><tr><td class="py-3 text-neutral-500">Support</td><td class="py-3 text-end tabular-nums ">Community</td><td class="py-3 text-end tabular-nums ">Email</td><td class="py-3 text-end tabular-nums ">Dedicated, 4h</td></tr></tbody></table>
+<h2 class="mt-14 mb-4 font-mono text-xs uppercase tracking-widest text-neutral-500">Pros and cons</h2>
+<div class="grid gap-10 md:grid-cols-3 text-sm"><div><p class="font-semibold">Free</p><ul class="mt-3 space-y-1.5"><li>+ No cost</li><li>+ Quick to start</li><li class="text-neutral-500">− Single user</li><li class="text-neutral-500">− No API</li></ul></div><div><p class="font-semibold">Team</p><ul class="mt-3 space-y-1.5"><li>+ API included</li><li>+ Good cost per user</li><li class="text-neutral-500">− No SSO</li></ul></div><div><p class="font-semibold">Enterprise</p><ul class="mt-3 space-y-1.5"><li>+ SSO and audit log</li><li>+ Support with SLA</li><li class="text-neutral-500">− Expensive for small teams</li></ul></div></div>
+
+    <footer class="mt-20 border-t border-neutral-200 pt-6 font-mono text-xs text-neutral-400">opencode artifacts · Nov 8, 2026</footer>
+  </main>
+</body>
+</html>

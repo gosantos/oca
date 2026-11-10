@@ -12,19 +12,44 @@ Paths below are relative to this skill's directory (the folder containing this f
 
 ## 1. Write the page
 
-Start from `assets/base.html`. Replace `{{TITLE}}`, `{{EYEBROW}}` (short mono label, e.g. "Report · Q3"), `{{SUBTITLE}}`, `{{DATE}}`, `{{WIDTH}}` (`max-w-3xl` for reading, `max-w-5xl` for dashboards) and put the body where `<!-- CONTENT -->` is.
+Start from `assets/base.html`. Replace `{{LANG}}` and `{{DIR}}` (see Languages below), `{{TITLE}}`, `{{EYEBROW}}` (short mono label, e.g. "Report · Q3"), `{{SUBTITLE}}`, `{{DATE}}`, `{{WIDTH}}` (`max-w-3xl` for reading, `max-w-5xl` for dashboards) and put the body where `<!-- CONTENT -->` is.
 
 Before writing, open the example in `references/examples/` closest to what you're building and reuse its patterns. `references/layouts.md` lists them and the building blocks they share.
 
 The look is deliberately quiet: white page, near-black text, one column, thin rules. That's what makes these pages read as finished documents instead of templates, so hold the line on it:
 
 - **Tailwind utility classes only** (Play CDN is in the template). Don't invent CSS classes; a `<style>` block is only for something Tailwind can't express. Keeping to utilities keeps every artifact consistent.
+- **Logical sides.** Use `text-start`/`text-end`, `ps-`/`pe-`, `ms-`/`me-`, `border-s`/`border-e` instead of left/right, so the same markup works in right-to-left pages.
 - **Monochrome.** `neutral-*` greys for everything. Color is reserved for data meaning: `emerald-600` up/good, `red-600` down/bad. Nothing else gets color.
 - **No decoration.** No shadows, gradients, emoji, icons-for-the-sake-of-icons, or cards nested in cards. Hierarchy comes from size, weight, spacing and `border-neutral-200` rules.
-- **Type.** Inter for text, JetBrains Mono for eyebrows, labels and numbers. Numbers get `tabular-nums` and are right-aligned in tables.
+- **Type.** Inter for text, JetBrains Mono for eyebrows, labels and numbers. Numbers get `tabular-nums` and are end-aligned (`text-end`) in tables.
 - **Charts** use Chart.js (already loaded; the template sets muted defaults). Use `#171717` for the main series, `#a3a3a3`/`#d4d4d4` for the rest, `borderWidth: 1.5`, `pointRadius: 0`, no legend when there's one series, `x.grid.display: false`. Create charts inside `addEventListener('load', ...)` so Chart.js is ready.
 - **Long text** goes in `<article class="prose prose-neutral max-w-none">`.
-- Write in the user's language and set `<html lang>` to match (the template uses it for Chart.js number formatting). Format numbers in the page with that locale too, e.g. `toLocaleString('pt-BR')`.
+### Languages
+
+Write the page in the language the user wrote to you in, including chart labels, table headers, eyebrows and dates. Set `{{LANG}}` and `{{DIR}}` from this table:
+
+| Language | `lang` | `dir` | Extra font link (put it where the template's comment says) |
+|---|---|---|---|
+| English | `en` | `ltr` | none |
+| Spanish | `es` | `ltr` | none |
+| French | `fr` | `ltr` | none |
+| German | `de` | `ltr` | none |
+| Russian | `ru` | `ltr` | none (Inter covers Cyrillic) |
+| Chinese (Simplified) | `zh-CN` | `ltr` | `Noto+Sans+SC:wght@400;500;700` |
+| Japanese | `ja` | `ltr` | `Noto+Sans+JP:wght@400;500;700` |
+| Hindi | `hi` | `ltr` | `Noto+Sans+Devanagari:wght@400;500;700` |
+| Bengali | `bn` | `ltr` | `Noto+Sans+Bengali:wght@400;500;700` |
+| Arabic | `ar` | `rtl` | `Noto+Sans+Arabic:wght@400;500;700` |
+
+The font link is `<link href="https://fonts.googleapis.com/css2?family=<value>&display=swap" rel="stylesheet">`. Inter has no CJK, Indic or Arabic glyphs, so without it those pages fall back to whatever the phone has. For any other language, use its BCP 47 tag, `rtl` for Hebrew, Persian and Urdu, and the matching Noto Sans family if Inter lacks the script.
+
+Script-specific rules:
+
+- **Number formatting** follows the page locale: write numbers with `toLocaleString(document.documentElement.lang)` or pre-format them the same way (`1,234.5` in en, `1.234,5` in de/es, `1 234,5` in fr/ru, `12,34,567` lakh grouping in hi/bn). Chart.js picks the locale up from `<html lang>` automatically.
+- **No `uppercase` or wide `tracking-widest`** on Chinese, Japanese, Hindi, Bengali or Arabic text: those scripts have no case, and letter-spacing breaks Arabic joining and Indic conjuncts. Drop those classes on eyebrows and section headings for these languages.
+- **Right-to-left (Arabic):** `dir="rtl"` plus logical classes mirror the layout. Leave numbers, code and Latin brand names as they are; the browser isolates them. Keep chart x-axes in chronological order (oldest at the start of the reading direction) with `scales.x.reverse: true`.
+- **CJK** prose reads better slightly larger and looser: add `leading-loose` to the `prose` article.
 
 ### Links must be relative
 
@@ -54,7 +79,7 @@ powershell -ExecutionPolicy Bypass -File scripts\publish.ps1
 powershell -ExecutionPolicy Bypass -File scripts\stop.ps1
 ```
 
-Give the user **`BASE/<slug>/`**. `publish` is idempotent: if the server and tunnel are already up it reprints the same `BASE`, so new pages appear under the existing link without a restart. Don't restart just to add a page, because a restart changes both the hostname and the secret and breaks links already shared.
+Give the user **`BASE/<slug>/`**. `publish` is idempotent: if the server and tunnel are already up it reprints the same `BASE`, so new pages appear under the existing link without a restart. Don't restart just to add a page, because a restart changes both the hostname and the secret and breaks links already shared. If `publish` prints `WARNING: previous tunnel ... expired`, Cloudflare dropped the old tunnel (usually after the machine slept); tell the user the old link is dead and give them the new one.
 
 If `cloudflared` is missing, stop and tell the user to install it (`brew install cloudflared`, `winget install Cloudflare.cloudflared`, or their distro's package). It's the only dependency; don't install anything else.
 

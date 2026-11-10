@@ -1,0 +1,90 @@
+[
+  {
+    "query": "can you turn this quarterly revenue csv (~/Downloads/q3_rev.csv, columns region, month, revenue_usd) into something visual i can send to my cofounder? she's on her phone",
+    "should_trigger": true
+  },
+  {
+    "query": "make an artifact summarizing the incident from last night: db failover at 02:14, 23 min of 500s on checkout, root cause was a stale connection pool",
+    "should_trigger": true
+  },
+  {
+    "query": "I have report.html sitting in my home folder, can you put it online for a few hours so my client can see it? no hosting accounts pls",
+    "should_trigger": true
+  },
+  {
+    "query": "write up a timeline of the major releases of Kubernetes since 1.0 as a page I can share with the new hires",
+    "should_trigger": true
+  },
+  {
+    "query": "show me a chart of BTC vs ETH monthly closes for 2025 — not in the terminal, I want to actually look at it",
+    "should_trigger": true
+  },
+  {
+    "query": "publish the comparison table you just made so I can drop it in slack",
+    "should_trigger": true
+  },
+  {
+    "query": "give me a dashboard with these KPIs: MRR 48k, churn 2.1%, NPS 41, CAC 310 — send me the link",
+    "should_trigger": true
+  },
+  {
+    "query": "add another page to the artifacts link I already sent my manager with the hiring plan breakdown",
+    "should_trigger": true
+  },
+  {
+    "query": "build a landing page for my bakery in Next.js with a hero section and an order form, deploy to vercel",
+    "should_trigger": false
+  },
+  {
+    "query": "set up a cloudflare named tunnel with Access so my home assistant instance is reachable at ha.mydomain.com",
+    "should_trigger": false
+  },
+  {
+    "query": "my express server on localhost:3000 returns 404 for /api/users, here's the router code, what's wrong?",
+    "should_trigger": false
+  },
+  {
+    "query": "convert this markdown report into a PDF I can attach to the invoice email",
+    "should_trigger": false
+  },
+  {
+    "query": "write a Chart.js config for a stacked bar chart in my React component, I'll render it myself",
+    "should_trigger": false
+  },
+  {
+    "query": "summarize this article about interest rates in 5 bullet points, just reply here",
+    "should_trigger": false
+  },
+  {
+    "query": "create a Google Sheet tracking my monthly expenses with a pie chart by category",
+    "should_trigger": false
+  },
+  {
+    "query": "make me a slide deck for friday's board meeting about Q3 numbers",
+    "should_trigger": false
+  },
+  {
+    "query": "how does cloudflared quick tunnel work and is it safe to use for a staging environment?",
+    "should_trigger": false
+  },
+  {
+    "query": "hazme una página con un gráfico de las ventas de mi tienda por mes (te paso los números abajo) y mándame el link para verlo en el móvil",
+    "should_trigger": true
+  },
+  {
+    "query": "把这份季度销售数据做成一个可以分享的网页报告，带图表，发我链接",
+    "should_trigger": true
+  },
+  {
+    "query": "Fais-moi une page récapitulative de l'incident d'hier soir, avec la chronologie, que je puisse envoyer à l'équipe",
+    "should_trigger": true
+  },
+  {
+    "query": "اكتب لي سكربت بايثون يرسم مخطط مبيعات باستخدام matplotlib ويحفظه كصورة PNG",
+    "should_trigger": false
+  },
+  {
+    "query": "Erklär mir bitte kurz hier im Chat den Unterschied zwischen Postgres und MySQL",
+    "should_trigger": false
+  }
+]

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Slow orders API</title>
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Non-Latin pages: add the Noto Sans stylesheet for the script here (see SKILL.md, "Languages") -->
+<script>
+  // Fallback stack covers every script the skill supports; the browser picks the first font with the glyphs.
+  const scriptFonts = ['Noto Sans SC', 'Noto Sans JP', 'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Arabic',
+    'PingFang SC', 'Hiragino Sans', 'Microsoft YaHei', 'Yu Gothic', 'Nirmala UI', 'Segoe UI', 'Geeza Pro'];
+  tailwind.config = { theme: { extend: { fontFamily: {
+    sans: ['Inter', ...scriptFonts, 'ui-sans-serif', 'system-ui', 'sans-serif'],
+    mono: ['JetBrains Mono', 'ui-monospace', ...scriptFonts, 'monospace'] } } } };
+  // Chart.js defaults: monochrome, quiet, localized
+  window.addEventListener('DOMContentLoaded', () => { if (!window.Chart) return;
+    const font = getComputedStyle(document.body).fontFamily;
+    Chart.defaults.locale = document.documentElement.lang; Chart.defaults.font.family = font; Chart.defaults.color = '#737373';
+    Chart.defaults.borderColor = '#f0f0f0'; Chart.defaults.plugins.legend.labels.boxWidth = 10;
+    if (document.documentElement.dir === 'rtl') { Chart.defaults.plugins.legend.rtl = true; Chart.defaults.plugins.tooltip.rtl = true; } });
+</script>
+</head>
+<body class="bg-white text-neutral-900 font-sans antialiased">
+  <main class="mx-auto max-w-3xl px-6 py-16">
+    <header class="mb-12 border-b border-neutral-200 pb-8">
+      <p class="font-mono text-xs uppercase tracking-widest text-neutral-500">Brief · Incident #214</p>
+      <h1 class="mt-3 text-3xl font-semibold tracking-tight">Slow orders API</h1>
+      <p class="mt-3 text-neutral-600">53 minutes of degradation. No data lost.</p>
+    </header>
+
+    <dl class="grid grid-cols-2 gap-y-4 text-sm md:grid-cols-4"><div><dt class="text-neutral-500">Severity</dt><dd class="mt-1 font-medium">SEV-2</dd></div><div><dt class="text-neutral-500">Duration</dt><dd class="mt-1 font-medium">53 min</dd></div><div><dt class="text-neutral-500">Affected</dt><dd class="mt-1 font-medium">~12% of orders</dd></div><div><dt class="text-neutral-500">Owner</dt><dd class="mt-1 font-medium">Platform</dd></div></dl>
+<h2 class="mt-14 mb-4 font-mono text-xs uppercase tracking-widest text-neutral-500">Timeline</h2>
+<ol class="relative border-s border-neutral-200"><li class="mb-8 ms-6 last:mb-0"><span class="absolute -start-[5px] mt-1.5 h-2.5 w-2.5 rounded-full border border-neutral-400 bg-white"></span><p class="font-mono text-xs text-neutral-500">09:12 · Alert</p><p class="mt-1">API p95 latency goes above 2s.</p></li><li class="mb-8 ms-6 last:mb-0"><span class="absolute -start-[5px] mt-1.5 h-2.5 w-2.5 rounded-full border border-neutral-400 bg-white"></span><p class="font-mono text-xs text-neutral-500">09:18 · Investigation</p><p class="mt-1">Job queue has 40,000 pending items.</p></li><li class="mb-8 ms-6 last:mb-0"><span class="absolute -start-[5px] mt-1.5 h-2.5 w-2.5 rounded-full border border-neutral-400 bg-white"></span><p class="font-mono text-xs text-neutral-500">09:31 · Cause</p><p class="mt-1">A migration locked the <code class="font-mono text-xs">orders</code> table.</p></li><li class="mb-8 ms-6 last:mb-0"><span class="absolute -start-[5px] mt-1.5 h-2.5 w-2.5 rounded-full border border-neutral-400 bg-white"></span><p class="font-mono text-xs text-neutral-500">09:44 · Mitigation</p><p class="mt-1">Migration rolled back, workers restarted.</p></li><li class="mb-8 ms-6 last:mb-0"><span class="absolute -start-[5px] mt-1.5 h-2.5 w-2.5 rounded-full bg-neutral-900"></span><p class="font-mono text-xs text-neutral-500">10:05 · Resolved</p><p class="mt-1">Latency normal, queue drained.</p></li></ol>
+<h2 class="mt-14 mb-4 font-mono text-xs uppercase tracking-widest text-neutral-500">Next steps</h2>
+<ul class="divide-y divide-neutral-100 text-sm"><li class="flex items-center justify-between py-3"><span>Migrations with a 5s lock timeout <span class="text-neutral-400">· Ana</span></span><span class="font-mono text-xs text-emerald-600">done</span></li><li class="flex items-center justify-between py-3"><span>Queue size alert <span class="text-neutral-400">· Bruno</span></span><span class="font-mono text-xs text-neutral-500">in progress</span></li><li class="flex items-center justify-between py-3"><span>Rollback runbook <span class="text-neutral-400">· Carla</span></span><span class="font-mono text-xs text-neutral-500">pending</span></li></ul>
+
+    <footer class="mt-20 border-t border-neutral-200 pt-6 font-mono text-xs text-neutral-400">opencode artifacts · Nov 8, 2026</footer>
+  </main>
+</body>
+</html>
