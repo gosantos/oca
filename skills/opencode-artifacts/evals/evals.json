@@ -2,7 +2,7 @@
   "skill_name": "opencode-artifacts",
   "languages": ["en", "zh-CN", "hi", "es", "fr", "ar", "bn", "ru", "ja", "de"],
   "common_assertions": [
-    "Page is at ${TMPDIR:-/tmp}/opencode-artifacts/site/<slug>/index.html with a kebab-case ASCII slug",
+    "Page is at ${TMPDIR:-/tmp}/opencode-artifacts/site/<slug>/index.html with a slug from scripts/slug.sh (<6hex>-kebab-case)",
     "No {{PLACEHOLDER}} tokens are left from assets/base.html",
     "<html lang> and dir match the Languages table in SKILL.md",
     "Non-Latin pages (zh-CN, ja, hi, bn, ar) load the matching Noto Sans stylesheet",
@@ -10,7 +10,7 @@
     "Uses logical classes: no text-right/text-left, pl-/pr-/ml-/mr-, border-l/border-r",
     "Only emerald-600 and red-600 are used as accent colors; no shadows, gradients or emoji",
     "All internal links are relative (no href starting with /)",
-    "site/index.html links to the page with a relative href",
+    "No site/index.html listing is created, and BASE/ returns 404",
     "The reply gives BASE/<slug>/; that URL returns 200 and the same path without the secret returns 404",
     "Visible text is in the prompt's language"
   ],
@@ -94,7 +94,7 @@
       "setup": "Publish any page first so a tunnel is already running and record BASE.",
       "prompt": "Ich habe den Link von vorhin schon an mein Team geschickt. Füg bitte eine zweite Seite hinzu, die Postgres, MySQL und SQLite für ein kleines SaaS vergleicht (Kosten, Betriebsaufwand, Skalierung, Tooling), und gib mir den Link.",
       "expected_output": "German comparison page added under the existing tunnel; same BASE, no restart.",
-      "assertions": ["stop.sh is not run and the tunnel is not restarted", "Returned link starts with the BASE recorded in setup", "site/index.html lists both pages"]
+      "assertions": ["stop.sh is not run and the tunnel is not restarted", "Returned link starts with the BASE recorded in setup", "Both pages are reachable under BASE with different random prefixes"]
     }
   ]
 }

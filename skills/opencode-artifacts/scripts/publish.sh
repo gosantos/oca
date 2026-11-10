@@ -2,6 +2,9 @@
 # Usage: publish.sh [--public] [dir]   (secret path prefix by default; --public disables)   -> serves dir (default $TMPDIR/opencode-artifacts/site) on 127.0.0.1:<random> + Cloudflare quick tunnel
 set -euo pipefail
 PUBLIC=0; [[ "${1:-}" == "--public" ]] && { PUBLIC=1; shift; }
+# The servers fail closed unless the secret is 64 hex chars; public mode has to be stated explicitly.
+export ARTIFACTS_PUBLIC=$([[ $PUBLIC == 1 ]] && echo 1 || echo 0)
+[[ $PUBLIC == 1 ]] && echo "WARNING: --public serves without a secret path; anyone with the hostname can read the whole site folder." >&2
 T="${TMPDIR:-/tmp}"; T="${T%/}"
 DIR="${1:-$T/opencode-artifacts/site}"; DIR="${DIR%/}"
 STATE="$T/opencode-artifacts/.state"; mkdir -p "$DIR" "$STATE"; chmod 700 "$STATE"
@@ -43,7 +46,7 @@ works() {
 pick() {
   case $1 in
     node)    works node -e 0          && CMD=(node "$HERE/server.mjs" "$DIR" "$PORT") ;;
-    deno)    works deno --version     && CMD=(deno run --allow-net=127.0.0.1 --allow-read="$DIR" --allow-env=ARTIFACTS_SECRET "$HERE/server.mjs" "$DIR" "$PORT") ;;
+    deno)    works deno --version     && CMD=(deno run --allow-net=127.0.0.1 --allow-read="$DIR" --allow-env=ARTIFACTS_SECRET,ARTIFACTS_PUBLIC "$HERE/server.mjs" "$DIR" "$PORT") ;;
     python3) works python3 -c 0       && CMD=(python3 -I "$HERE/server.py" "$DIR" "$PORT") ;;
     python)  works python -c 'import http.server' && CMD=(python -I "$HERE/server.py" "$DIR" "$PORT") ;;
     perl)    works perl -MIO::Socket::INET -MCwd -e 0 && CMD=(perl "$HERE/server.pl" "$DIR" "$PORT") ;;
@@ -56,7 +59,8 @@ pick() {
   esac
 }
 CMD=()
-for r in ${OA_RUNTIME:-node deno python3 python perl busybox}; do pick "$r" && break; done
+# perl first: preinstalled on macOS and nearly every Linux, and the fastest server measured. python is the last resort.
+for r in ${OA_RUNTIME:-perl node deno busybox python3 python}; do pick "$r" && break; done
 [[ ${#CMD[@]} -gt 0 ]] || { echo "ERROR: no usable runtime (node/deno/python/perl/busybox)"; exit 3; }
 
 ARTIFACTS_SECRET="$SECRET" nohup "${CMD[@]}" >"$STATE/server.log" 2>&1 & echo $! >"$STATE/server.pid"

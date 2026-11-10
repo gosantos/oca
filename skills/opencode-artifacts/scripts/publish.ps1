@@ -34,13 +34,16 @@ do { $MPort = 30000 + ([BitConverter]::ToUInt32((RandBytes 4), 0) % 30000) } whi
 
 # 256 bits from the OS CSPRNG as hex: path prefix that must be known to reach anything (everything else is 404).
 $Secret = if ($Public) { '' } else { -join ((RandBytes 32) | ForEach-Object { $_.ToString('x2') }) }
+if ($Public) { [Console]::Error.WriteLine('WARNING: -Public serves without a secret path; anyone with the hostname can read the whole site folder.') }
 
 $ps = (Get-Process -Id $PID).Path
 $env:ARTIFACTS_SECRET = $Secret
+# The servers fail closed unless the secret is 64 hex chars; public mode has to be stated explicitly.
+$env:ARTIFACTS_PUBLIC = if ($Public) { '1' } else { '0' }
 $srv = Start-Process -FilePath $ps -WindowStyle Hidden -PassThru `
   -ArgumentList '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', "`"$Here\server.ps1`"", '-Root', "`"$Dir`"", '-Port', $Port `
   -RedirectStandardOutput "$State\server.log" -RedirectStandardError "$State\server.err"
-Remove-Item Env:ARTIFACTS_SECRET
+Remove-Item Env:ARTIFACTS_SECRET, Env:ARTIFACTS_PUBLIC
 $srv.Id | Set-Content "$State\server.pid"
 Start-Sleep -Milliseconds 800
 

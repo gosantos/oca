@@ -5,7 +5,7 @@ usage: check.py <site-dir> <slug> <lang> [BASE]
 Prints one JSON object with an `expectations` list of {text, passed, evidence}.
 """
 
-import json, re, sys, urllib.request, urllib.error
+import json, os, re, sys, urllib.request, urllib.error
 
 LANGS = {  # lang -> (dir, Noto family or None)
     "en": ("ltr", None),
@@ -52,7 +52,11 @@ def main():
         print(json.dumps({"expectations": out}, ensure_ascii=False))
         return
     add("page exists", True, f"{len(html)} bytes")
-    add("slug is kebab-case ASCII", re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", slug), slug)
+    add(
+        "slug is <6hex>-kebab-case",
+        re.fullmatch(r"[0-9a-f]{6}-[a-z0-9]+(-[a-z0-9]+)*", slug),
+        slug,
+    )
     add(
         "no template placeholders left",
         not re.search(r"\{\{[A-Z_]+\}\}", html),
@@ -94,16 +98,13 @@ def main():
         add(f"visible text uses the {lang} script", n > 50, f"{n} chars")
     if lang == "ar" and "new Chart" in html:
         add("RTL chart x-axis reversed", re.search(r"reverse\s*:\s*true", html), "")
-    try:
-        idx = open(f"{site}/index.html", encoding="utf-8").read()
-        add(
-            "site/index.html links the page relatively",
-            re.search(rf'href="(\./)?{slug}/?"', idx),
-            "",
-        )
-    except OSError as e:
-        add("site/index.html links the page relatively", False, e)
+    add("no site/index.html listing", not os.path.exists(f"{site}/index.html"), "")
     if base:
+        add(
+            "BASE/ (site root) returns 404",
+            status(f"{base}/") == 404,
+            status(f"{base}/"),
+        )
         add(
             "BASE/<slug>/ returns 200",
             status(f"{base}/{slug}/") == 200,
