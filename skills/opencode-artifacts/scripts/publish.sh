@@ -37,18 +37,14 @@ if [[ $PUBLIC == 0 ]]; then
 fi
 
 # Use a runtime that already works on this machine; never install anything. Server binds 127.0.0.1 only.
-# On macOS /usr/bin/python3 is a stub that prompts to install Xcode tools, so skip it unless they're present.
 works() {
   local p; p=$(command -v "$1") || return 1
-  [[ $(uname) == Darwin && $p == /usr/bin/python3 ]] && ! xcode-select -p >/dev/null 2>&1 && return 1
   "$p" "${@:2}" >/dev/null 2>&1
 }
 pick() {
   case $1 in
     node)    works node -e 0          && CMD=(node "$HERE/server.mjs" "$DIR" "$PORT") ;;
     deno)    works deno --version     && CMD=(deno run --allow-net=127.0.0.1 --allow-read="$DIR" --allow-env=ARTIFACTS_SECRET,ARTIFACTS_PUBLIC "$HERE/server.mjs" "$DIR" "$PORT") ;;
-    python3) works python3 -c 0       && CMD=(python3 -I "$HERE/server.py" "$DIR" "$PORT") ;;
-    python)  works python -c 'import http.server' && CMD=(python -I "$HERE/server.py" "$DIR" "$PORT") ;;
     perl)    works perl -MIO::Socket::INET -MCwd -e 0 && CMD=(perl "$HERE/server.pl" "$DIR" "$PORT") ;;
     busybox) command -v busybox >/dev/null && busybox --list 2>/dev/null | grep -qx httpd || return 1
              # busybox can't check a prefix, so its docroot holds only a symlink named after the secret.
@@ -59,9 +55,9 @@ pick() {
   esac
 }
 CMD=()
-# perl first: preinstalled on macOS and nearly every Linux, and the fastest server measured. python is the last resort.
-for r in ${OA_RUNTIME:-perl node deno busybox python3 python}; do pick "$r" && break; done
-[[ ${#CMD[@]} -gt 0 ]] || { echo "ERROR: no usable runtime (node/deno/python/perl/busybox)"; exit 3; }
+# perl first: preinstalled on macOS and nearly every Linux, and the fastest server measured. No python, by design.
+for r in ${OA_RUNTIME:-perl node deno busybox}; do pick "$r" && break; done
+[[ ${#CMD[@]} -gt 0 ]] || { echo "ERROR: no usable runtime (perl/node/deno/busybox); install perl or node"; exit 3; }
 
 ARTIFACTS_SECRET="$SECRET" nohup "${CMD[@]}" >"$STATE/server.log" 2>&1 & echo $! >"$STATE/server.pid"
 for _ in $(seq 1 30); do port_free "$PORT" || break; sleep 0.1; done
