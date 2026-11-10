@@ -71,7 +71,6 @@ skills/oca/
 ├── assets/base.html         page template
 ├── references/              layout guide + 5 example pages
 └── scripts/                 publish/stop/slug (bash + PowerShell), static servers (perl, node/deno, python, powershell)
-evals/                       skill evals (dev only; not installed with the skill)
 ```
 
 ## License
