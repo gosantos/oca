@@ -1,9 +1,9 @@
 ---
-name: opencode-artifacts
-description: Turn any answer into a clean, minimalist HTML page (report, brief, dashboard, chart, comparison table, timeline, long-form text) and share it as a private public-HTTPS link served straight from the user's machine through a Cloudflare quick tunnel. Use this whenever the user asks for an "artifact", a page, a link, a shareable report or dashboard, wants to "show", "send" or "publish" a result, wants charts or a visual summary of data, or wants to expose a local HTML file, even if they don't say "artifact" or "Cloudflare".
+name: oca
+description: Turn any answer into a clean, minimalist HTML page (report, brief, dashboard, chart, comparison table, timeline, long-form text) and share it as a private public-HTTPS link served straight from the user's machine through a Cloudflare quick tunnel. Use this whenever the user says "oca" or asks for an "artifact", a page, a link, a shareable report or dashboard, wants to "show", "send" or "publish" a result, wants charts or a visual summary of data, or wants to expose a local HTML file, even if they don't say "artifact" or "Cloudflare".
 ---
 
-# opencode artifacts
+# oca
 
 Write a single HTML page, drop it in a local folder, and hand the user a link like
 `https://<random>.trycloudflare.com/<256-bit-secret>/<6hex>-<name>/`. Nothing gets installed besides `cloudflared`; the server runs on whatever runtime the machine already has.
@@ -67,7 +67,7 @@ powershell -ExecutionPolicy Bypass -File scripts\slug.ps1 <short-kebab-name>
 Then write the page to:
 
 ```
-${TMPDIR:-/tmp}/opencode-artifacts/site/<slug>/index.html     (Windows: %TEMP%\opencode-artifacts\site\...)
+${TMPDIR:-/tmp}/oca/site/<slug>/index.html     (Windows: %TEMP%\oca\site\...)
 ```
 
 The 6 random hex chars in front of the name mean someone holding the link to one artifact can't guess the others. Calling `slug` again with the same name returns the same folder, so updating a page keeps its link. Don't create `site/index.html`: the server never serves the site root, and a listing would hand out every artifact to anyone with one link. Everything in that folder is reachable by whoever has the link, so put only artifact files there; never copy secrets, `.env` files or source trees in.
@@ -101,12 +101,12 @@ curl -s -o /dev/null -w "%{http_code}" URL/<slug>/    # expect 404 (no secret)
 
 ## What the scripts do, and why
 
-- **Runtime detection, no installs.** Tries `perl`, `node`, `deno`, `busybox httpd`, `python3`, `python` in that order; on Windows, PowerShell's built-in `HttpListener`. Perl comes first because it ships with macOS and nearly every Linux and was the fastest server in benchmarks; python is the last resort. Every common OS ships at least one. The macOS `/usr/bin/python3` stub is skipped when Xcode tools are missing, because calling it pops an install dialog. Force one with `OA_RUNTIME=perl`.
+- **Runtime detection, no installs.** Tries `perl`, `node`, `deno`, `busybox httpd`, `python3`, `python` in that order; on Windows, PowerShell's built-in `HttpListener`. Perl comes first because it ships with macOS and nearly every Linux and was the fastest server in benchmarks; python is the last resort. Every common OS ships at least one. The macOS `/usr/bin/python3` stub is skipped when Xcode tools are missing, because calling it pops an install dialog. Force one with `OCA_RUNTIME=perl`.
 - **127.0.0.1 only, random port 30000–59999.** Nothing listens on the LAN, and there are no clashes with dev servers on 3000/8080.
 - **Outbound-only tunnel.** `cloudflared tunnel --url` opens no inbound ports on the machine or the router and needs no Cloudflare account.
 - **256-bit secret path.** Generated with `openssl rand -hex 32`, falling back to `/dev/urandom` (on Windows, `RandomNumberGenerator`), both of which read from the OS CSPRNG. The server answers only under `/<secret>/`; every other path is 404, so the tunnel looks empty without the link.
 - **Hardened static server.** GET/HEAD only, no directory listing, the site root is always 404, dotfiles and `..` traversal blocked, plus `nosniff`, `no-referrer` (so the secret doesn't leak to the CDNs the page loads), `noindex` and anti-framing headers. It refuses to start if the secret isn't 64 hex chars, unless `--public` was passed explicitly.
 - **Fast.** HTTP/1.1 keep-alive, `Content-Length`, `TCP_NODELAY` and gzip for text files, so pages load quickly through the tunnel.
-- State and logs live in `<tmp>/opencode-artifacts/.state/` (mode 700).
+- State and logs live in `<tmp>/oca/.state/` (mode 700).
 
 When it's relevant, tell the user: the link *is* the credential, so anyone they send it to can open it. It stops working when they run `stop` or the machine sleeps or reboots. A stable or SSO-protected URL needs a named Cloudflare tunnel plus Cloudflare Access, which this skill doesn't set up.

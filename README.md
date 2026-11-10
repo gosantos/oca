@@ -1,9 +1,9 @@
-# opencode-artifacts
+# oca
 
 An agent skill that turns answers into clean, minimalist HTML pages (reports, dashboards, charts, comparisons, timelines, long-form text) and shares them through a private HTTPS link served from your own machine via a Cloudflare quick tunnel.
 
 ```bash
-npx skills add gosantos/opencode-artifacts
+npx skills add gosantos/oca
 ```
 
 Works with OpenCode, Claude Code, Codex, Cursor and any agent that supports [Agent Skills](https://agentskills.io).
@@ -38,7 +38,7 @@ No Cloudflare account needed. Nothing else gets installed. The server uses the f
 | `python3` / `python` | last resort |
 | PowerShell `HttpListener` | every Windows (`publish.ps1`) |
 
-Perl goes first because it is preinstalled almost everywhere outside Windows and was the fastest in local benchmarks (keep-alive, gzip). Force a runtime with `OA_RUNTIME=node`.
+Perl goes first because it is preinstalled almost everywhere outside Windows and was the fastest in local benchmarks (keep-alive, gzip). Force a runtime with `OCA_RUNTIME=node`.
 
 ## Security model
 
@@ -54,17 +54,17 @@ The link is the credential, so anyone you send it to can open it. It dies when y
 ## Manual use
 
 ```bash
-SLUG=$(bash skills/opencode-artifacts/scripts/slug.sh report)
-cp report.html "${TMPDIR:-/tmp}/opencode-artifacts/site/$SLUG/index.html"
-bash skills/opencode-artifacts/scripts/publish.sh   # prints BASE=...
+SLUG=$(bash skills/oca/scripts/slug.sh report)
+cp report.html "${TMPDIR:-/tmp}/oca/site/$SLUG/index.html"
+bash skills/oca/scripts/publish.sh   # prints BASE=...
 open "$BASE/$SLUG/"
-bash skills/opencode-artifacts/scripts/stop.sh
+bash skills/oca/scripts/stop.sh
 ```
 
 ## Layout
 
 ```
-skills/opencode-artifacts/
+skills/oca/
 ├── SKILL.md                 instructions for the agent
 ├── assets/base.html         page template
 ├── references/              layout guide + 5 example pages

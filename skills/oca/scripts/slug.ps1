@@ -1,8 +1,8 @@
-# Usage: slug.ps1 <name>   -> prints "<6hex>-<name>" and creates %TEMP%\opencode-artifacts\site\<6hex>-<name>\
+# Usage: slug.ps1 <name>   -> prints "<6hex>-<name>" and creates %TEMP%\oca\site\<6hex>-<name>\
 # The 6 hex chars come from the OS CSPRNG, so an artifact path can't be guessed from its name.
 param([Parameter(Mandatory)][string]$Name)
 $ErrorActionPreference = 'Stop'
-$Site = Join-Path (Join-Path ([IO.Path]::GetTempPath()) 'opencode-artifacts') 'site'
+$Site = Join-Path (Join-Path ([IO.Path]::GetTempPath()) 'oca') 'site'
 # Strip accents (ação -> acao), then anything outside a-z0-9 becomes a separator.
 $Name = -join ($Name.Normalize([Text.NormalizationForm]::FormD).ToCharArray() |
   Where-Object { [Globalization.CharUnicodeInfo]::GetUnicodeCategory($_) -ne 'NonSpacingMark' })

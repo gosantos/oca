@@ -1,8 +1,8 @@
 # Usage: publish.ps1 [-Public] [-Dir <path>]
-# Serves Dir (default %TEMP%\opencode-artifacts\site) on 127.0.0.1:<random> and opens a Cloudflare quick tunnel.
+# Serves Dir (default %TEMP%\oca\site) on 127.0.0.1:<random> and opens a Cloudflare quick tunnel.
 param([switch]$Public, [string]$Dir)
 $ErrorActionPreference = 'Stop'
-$T = Join-Path ([IO.Path]::GetTempPath()) 'opencode-artifacts'
+$T = Join-Path ([IO.Path]::GetTempPath()) 'oca'
 if (-not $Dir) { $Dir = Join-Path $T 'site' }
 $State = Join-Path $T '.state'
 New-Item -ItemType Directory -Force -Path $Dir, $State | Out-Null

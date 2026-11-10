@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# Usage: publish.sh [--public] [dir]   (secret path prefix by default; --public disables)   -> serves dir (default $TMPDIR/opencode-artifacts/site) on 127.0.0.1:<random> + Cloudflare quick tunnel
+# Usage: publish.sh [--public] [dir]   (secret path prefix by default; --public disables)   -> serves dir (default $TMPDIR/oca/site) on 127.0.0.1:<random> + Cloudflare quick tunnel
 set -euo pipefail
 PUBLIC=0; [[ "${1:-}" == "--public" ]] && { PUBLIC=1; shift; }
 # The servers fail closed unless the secret is 64 hex chars; public mode has to be stated explicitly.
 export ARTIFACTS_PUBLIC=$([[ $PUBLIC == 1 ]] && echo 1 || echo 0)
 [[ $PUBLIC == 1 ]] && echo "WARNING: --public serves without a secret path; anyone with the hostname can read the whole site folder." >&2
 T="${TMPDIR:-/tmp}"; T="${T%/}"
-DIR="${1:-$T/opencode-artifacts/site}"; DIR="${DIR%/}"
-STATE="$T/opencode-artifacts/.state"; mkdir -p "$DIR" "$STATE"; chmod 700 "$STATE"
+DIR="${1:-$T/oca/site}"; DIR="${DIR%/}"
+STATE="$T/oca/.state"; mkdir -p "$DIR" "$STATE"; chmod 700 "$STATE"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 # Physical path: on macOS $TMPDIR sits under the /var -> /private/var symlink, and deno's --allow-read matches real paths.
 DIR="$(cd "$DIR" && pwd -P)"
@@ -62,7 +62,7 @@ pick() {
 }
 CMD=()
 # perl first: preinstalled on macOS and nearly every Linux, and the fastest server measured. python is the last resort.
-for r in ${OA_RUNTIME:-perl node deno busybox python3 python}; do pick "$r" && break; done
+for r in ${OCA_RUNTIME:-perl node deno busybox python3 python}; do pick "$r" && break; done
 [[ ${#CMD[@]} -gt 0 ]] || { echo "ERROR: no usable runtime (node/deno/python/perl/busybox)"; exit 3; }
 
 ARTIFACTS_SECRET="$SECRET" nohup "${CMD[@]}" >"$STATE/server.log" 2>&1 & echo $! >"$STATE/server.pid"

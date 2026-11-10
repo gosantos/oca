@@ -1,4 +1,4 @@
-$State = Join-Path ([IO.Path]::GetTempPath()) 'opencode-artifacts\.state'
+$State = Join-Path ([IO.Path]::GetTempPath()) 'oca\.state'
 foreach ($p in 'tunnel', 'server') {
   $f = Join-Path $State "$p.pid"
   if (Test-Path $f) { Stop-Process -Id (Get-Content $f) -Force -ErrorAction SilentlyContinue; Remove-Item $f }
