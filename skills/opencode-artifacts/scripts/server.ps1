@@ -31,8 +31,13 @@ while ($l.IsListening) {
     if ($u -eq '/' -or $u -eq '') { $res.StatusCode = 404; continue }
     if ($u -match '(^|[\\/])\.') { $res.StatusCode = 404; continue }
     $f = [IO.Path]::GetFullPath((Join-Path $Root ($u.TrimStart('/') -replace '/', '\')))
-    if (Test-Path -LiteralPath $f -PathType Container) { $f = Join-Path $f 'index.html' }
-    if (-not $f.StartsWith("$Root\", [StringComparison]::OrdinalIgnoreCase) -or -not (Test-Path -LiteralPath $f -PathType Leaf)) { $res.StatusCode = 404; continue }
+    if (Test-Path -LiteralPath $f -PathType Container) {
+      # Relative links only resolve correctly from the directory URL with a trailing slash.
+      if (-not $u.EndsWith('/')) { $res.StatusCode = 301; $res.Headers['Location'] = "$($req.Url.AbsolutePath)/"; continue }
+      $f = Join-Path $f 'index.html'
+    }
+    # Files directly in the site root are never served, so a stray listing stays private.
+    if (-not $f.StartsWith("$Root\", [StringComparison]::OrdinalIgnoreCase) -or [IO.Path]::GetDirectoryName($f) -eq $Root -or -not (Test-Path -LiteralPath $f -PathType Leaf)) { $res.StatusCode = 404; continue }
     $ext = [IO.Path]::GetExtension($f).ToLower()
     $res.ContentType = if ($Types[$ext]) { $Types[$ext] } else { 'application/octet-stream' }
     $bytes = [IO.File]::ReadAllBytes($f)

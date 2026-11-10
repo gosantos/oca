@@ -46,6 +46,19 @@ class H(http.server.SimpleHTTPRequestHandler):
         except OSError:
             pass
 
+    def redirect(s, location):
+        # Content-Length: 0 matters with keep-alive, or the client waits for a body forever.
+        s.send_response(301)
+        s.send_header("Location", location)
+        s.send_header("Content-Length", "0")
+        s.end_headers()
+        return None
+
+    def method_not_allowed(s):
+        s.send_error(405)
+
+    do_POST = do_PUT = do_DELETE = do_PATCH = do_OPTIONS = method_not_allowed
+
     def list_directory(s, path):
         s.send_error(404)
         return None
@@ -53,10 +66,7 @@ class H(http.server.SimpleHTTPRequestHandler):
     def send_head(s):
         u = unquote(urlsplit(s.path).path)
         if not PUBLIC and u == PREFIX:
-            s.send_response(301)
-            s.send_header("Location", PREFIX + "/")
-            s.end_headers()
-            return None
+            return s.redirect(PREFIX + "/")
         if not u.startswith(PREFIX + "/"):
             s.send_error(404)
             return None
@@ -66,8 +76,16 @@ class H(http.server.SimpleHTTPRequestHandler):
             return None
         p = os.path.realpath(s.translate_path(s.path))
         if os.path.isdir(p):
+            # Relative links only resolve correctly from the directory URL with a trailing slash.
+            if not u.endswith("/"):
+                return s.redirect(PREFIX + urlsplit(s.path).path + "/")
             p = os.path.join(p, "index.html")
-        if not p.startswith(ROOT) or not os.path.isfile(p):
+        # Files directly in the site root are never served, so a stray listing stays private.
+        if (
+            not p.startswith(ROOT + os.sep)
+            or os.path.dirname(p) == ROOT
+            or not os.path.isfile(p)
+        ):
             s.send_error(404)
             return None
         ext = os.path.splitext(p)[1].lower()

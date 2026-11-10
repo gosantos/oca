@@ -9,6 +9,8 @@ T="${TMPDIR:-/tmp}"; T="${T%/}"
 DIR="${1:-$T/opencode-artifacts/site}"; DIR="${DIR%/}"
 STATE="$T/opencode-artifacts/.state"; mkdir -p "$DIR" "$STATE"; chmod 700 "$STATE"
 HERE="$(cd "$(dirname "$0")" && pwd)"
+# Physical path: on macOS $TMPDIR sits under the /var -> /private/var symlink, and deno's --allow-read matches real paths.
+DIR="$(cd "$DIR" && pwd -P)"
 
 # cloudflared's metrics server answers /ready with 200 only while the tunnel is registered with Cloudflare.
 ready() { local r; { exec 3<>"/dev/tcp/127.0.0.1/$1"; } 2>/dev/null || return 1

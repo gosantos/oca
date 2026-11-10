@@ -22,14 +22,23 @@ const server = http.createServer((req, res) => {
   const end = (c) => { res.writeHead(c, H); res.end(); };
   if (req.method !== 'GET' && req.method !== 'HEAD') return end(405);
   let u; try { u = decodeURIComponent(new URL(req.url, 'http://x').pathname); } catch { return end(404); }
-  if (!PUBLIC && u === PREFIX) { res.writeHead(301, { ...H, Location: PREFIX + '/' }); return res.end(); }
+  const redirect = (to) => { res.writeHead(301, { ...H, Location: to, 'Content-Length': 0 }); res.end(); };
+  if (!PUBLIC && u === PREFIX) return redirect(PREFIX + '/');
   if (!u.startsWith(PREFIX + '/')) return end(404);
   u = u.slice(PREFIX.length);
   if (u === '/') return end(404);
   if (u.split('/').some(s => s.startsWith('.'))) return end(404);
   let f = path.resolve(ROOT, '.' + u);
-  try { if (fs.statSync(f).isDirectory()) f = path.join(f, 'index.html'); f = fs.realpathSync(f); } catch { return end(404); }
-  if (!f.startsWith(ROOT + path.sep)) return end(404);
+  try {
+    if (fs.statSync(f).isDirectory()) {
+      // Relative links only resolve correctly from the directory URL with a trailing slash.
+      if (!u.endsWith('/')) return redirect(new URL(req.url, 'http://x').pathname + '/');
+      f = path.join(f, 'index.html');
+    }
+    f = fs.realpathSync(f);
+  } catch { return end(404); }
+  // Files directly in the site root are never served, so a stray listing stays private.
+  if (!f.startsWith(ROOT + path.sep) || path.dirname(f) === ROOT) return end(404);
   const ext = path.extname(f).toLowerCase(); const type = T[ext] || 'application/octet-stream';
   fs.stat(f, (err, st) => {
     if (err || !st.isFile()) return end(404);

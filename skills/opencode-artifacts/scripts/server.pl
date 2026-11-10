@@ -48,8 +48,15 @@ while (my $c = $srv->accept) {
     if (index($u, "$PREFIX/") != 0) { print $c $reply->('404 Not Found'); last unless $keep; next }
     $u = substr($u, length $PREFIX);
     if ($u eq '' || $u eq '/' || grep { /^\./ } split m{/}, $u) { print $c $reply->('404 Not Found'); last unless $keep; next }
-    my $f = "$ROOT$u"; $f .= '/index.html' if -d $f; $f = realpath($f);
-    if (!defined $f || !-f $f || index($f, "$ROOT/") != 0) { print $c $reply->('404 Not Found'); last unless $keep; next }
+    my $f = "$ROOT$u";
+    if (-d $f) {
+      # Relative links only resolve correctly from the directory URL with a trailing slash.
+      if ($u !~ m{/$}) { (my $loc = $raw) =~ s/[?#].*//; print $c $reply->('301 Moved Permanently', "Location: $loc/\r\n"); last unless $keep; next }
+      $f .= '/index.html';
+    }
+    $f = realpath($f);
+    # Files directly in the site root are never served, so a stray listing stays private.
+    if (!defined $f || !-f $f || index($f, "$ROOT/") != 0 || $f =~ m{\A\Q$ROOT\E/[^/]+\z}) { print $c $reply->('404 Not Found'); last unless $keep; next }
     my ($ext) = $f =~ /\.(\w+)$/; $ext = lc($ext // '');
     my $type = $T{$ext} // 'application/octet-stream';
     my $size = -s $f;
