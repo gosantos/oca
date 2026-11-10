@@ -35,6 +35,7 @@ No Cloudflare account needed. Nothing else gets installed. The server uses the f
 | `perl` | macOS, Debian/Ubuntu, most Linux, Git for Windows |
 | `node` / `deno` | dev machines |
 | `busybox httpd` | Alpine and minimal containers |
+| `python3` / `python` | last resort |
 | PowerShell `HttpListener` | every Windows (`publish.ps1`) |
 
 Perl goes first because it is preinstalled almost everywhere outside Windows and was the fastest in local benchmarks (keep-alive, gzip). Force a runtime with `OA_RUNTIME=node`.
@@ -67,7 +68,7 @@ skills/opencode-artifacts/
 ├── SKILL.md                 instructions for the agent
 ├── assets/base.html         page template
 ├── references/              layout guide + 5 example pages
-└── scripts/                 publish/stop/slug (bash + PowerShell), static servers (perl, node/deno, powershell)
+└── scripts/                 publish/stop/slug (bash + PowerShell), static servers (perl, node/deno, python, powershell)
 ```
 
 ## License

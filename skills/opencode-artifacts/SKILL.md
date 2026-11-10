@@ -101,7 +101,7 @@ curl -s -o /dev/null -w "%{http_code}" URL/<slug>/    # expect 404 (no secret)
 
 ## What the scripts do, and why
 
-- **Runtime detection, no installs.** Tries `perl`, `node`, `deno`, `busybox httpd` in that order (no python, by design); on Windows, PowerShell's built-in `HttpListener`. Perl comes first because it ships with macOS and nearly every Linux and was the fastest server in benchmarks. Every common OS ships at least one. Force one with `OA_RUNTIME=perl`.
+- **Runtime detection, no installs.** Tries `perl`, `node`, `deno`, `busybox httpd`, `python3`, `python` in that order; on Windows, PowerShell's built-in `HttpListener`. Perl comes first because it ships with macOS and nearly every Linux and was the fastest server in benchmarks; python is the last resort. Every common OS ships at least one. The macOS `/usr/bin/python3` stub is skipped when Xcode tools are missing, because calling it pops an install dialog. Force one with `OA_RUNTIME=perl`.
 - **127.0.0.1 only, random port 30000–59999.** Nothing listens on the LAN, and there are no clashes with dev servers on 3000/8080.
 - **Outbound-only tunnel.** `cloudflared tunnel --url` opens no inbound ports on the machine or the router and needs no Cloudflare account.
 - **256-bit secret path.** Generated with `openssl rand -hex 32`, falling back to `/dev/urandom` (on Windows, `RandomNumberGenerator`), both of which read from the OS CSPRNG. The server answers only under `/<secret>/`; every other path is 404, so the tunnel looks empty without the link.
