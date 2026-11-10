@@ -3,8 +3,10 @@
 param([Parameter(Mandatory)][string]$Name)
 $ErrorActionPreference = 'Stop'
 $Site = Join-Path (Join-Path ([IO.Path]::GetTempPath()) 'opencode-artifacts') 'site'
-$Name = & { $_.ToLowerInvariant() -replace '[^a-z0-9]+', '-' } $Name
-$Name = $Name.Trim('-')
+# Strip accents (ação -> acao), then anything outside a-z0-9 becomes a separator.
+$Name = -join ($Name.Normalize([Text.NormalizationForm]::FormD).ToCharArray() |
+  Where-Object { [Globalization.CharUnicodeInfo]::GetUnicodeCategory($_) -ne 'NonSpacingMark' })
+$Name = ($Name.ToLowerInvariant() -creplace '[^a-z0-9]+', '-').Trim('-')
 if (-not $Name) { throw 'ERROR: name has no a-z0-9 characters' }
 New-Item -ItemType Directory -Force -Path $Site | Out-Null
 # Same name -> same folder, so adding a page never breaks a link already shared.
