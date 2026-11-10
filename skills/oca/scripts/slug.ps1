@@ -1,4 +1,4 @@
-# Usage: slug.ps1 <name>   -> prints "<6hex>-<name>" and creates %TEMP%\oca\site\<6hex>-<name>\
+# Usage: slug.ps1 <name>   -> creates %TEMP%\oca\site\<6hex>-<name>\ and prints SLUG=<6hex>-<name> and DIR=<that folder>
 # The 6 hex chars come from the OS CSPRNG, so an artifact path can't be guessed from its name.
 param([Parameter(Mandatory)][string]$Name)
 $ErrorActionPreference = 'Stop'
@@ -12,9 +12,9 @@ New-Item -ItemType Directory -Force -Path $Site | Out-Null
 # Same name -> same folder, so adding a page never breaks a link already shared.
 $existing = Get-ChildItem -LiteralPath $Site -Directory -ErrorAction SilentlyContinue |
   Where-Object { $_.Name -match "^[0-9a-f]{6}-$([Regex]::Escape($Name))$" } | Select-Object -First 1
-if ($existing) { $existing.Name; exit 0 }
+if ($existing) { "SLUG=$($existing.Name)"; "DIR=$($existing.FullName)"; exit 0 }
 $bytes = [byte[]]::new(3)
 [Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($bytes)
 $hex = -join ($bytes | ForEach-Object { $_.ToString('x2') })
 New-Item -ItemType Directory -Force -Path (Join-Path $Site "$hex-$Name") | Out-Null
-"$hex-$Name"
+"SLUG=$hex-$Name"; "DIR=$(Join-Path $Site "$hex-$Name")"

@@ -5,10 +5,10 @@ PUBLIC=0; [[ "${1:-}" == "--public" ]] && { PUBLIC=1; shift; }
 # The servers fail closed unless the secret is 64 hex chars; public mode has to be stated explicitly.
 export ARTIFACTS_PUBLIC=$([[ $PUBLIC == 1 ]] && echo 1 || echo 0)
 [[ $PUBLIC == 1 ]] && echo "WARNING: --public serves without a secret path; anyone with the hostname can read the whole site folder." >&2
-T="${TMPDIR:-/tmp}"; T="${T%/}"
-DIR="${1:-$T/oca/site}"; DIR="${DIR%/}"
-STATE="$T/oca/.state"; mkdir -p "$DIR" "$STATE"; chmod 700 "$STATE"
 HERE="$(cd "$(dirname "$0")" && pwd)"
+source "$HERE/root.sh"
+DIR="${1:-$OCA_ROOT/site}"; DIR="${DIR%/}"
+STATE="$OCA_ROOT/.state"; mkdir -p "$DIR" "$STATE"; chmod 700 "$STATE"
 # Physical path: on macOS $TMPDIR sits under the /var -> /private/var symlink, and deno's --allow-read matches real paths.
 DIR="$(cd "$DIR" && pwd -P)"
 

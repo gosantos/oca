@@ -47,6 +47,8 @@ Perl goes first because it is preinstalled almost everywhere outside Windows and
 - Every link carries a **256-bit secret path** from the OS CSPRNG (`openssl rand`, `/dev/urandom`, or .NET `RandomNumberGenerator`). Without it, every request is a 404. The server refuses to start with a missing or malformed secret.
 - Every artifact folder starts with **6 random hex chars** (`3f9a1c-q3-report`), and the site root is never served, so there is no listing: someone holding the link to one page can't find the others.
 - The static server is GET/HEAD only, with no directory listing; dotfiles and `..` are blocked, and it sends `nosniff`, `no-referrer`, `noindex` and anti-framing headers.
+- Files live in a **private per-user folder** (your temp dir, `$XDG_RUNTIME_DIR`, or `/tmp/oca-<uid>`), mode 700. The scripts refuse a folder owned by someone else, so other users on a shared machine can't read or swap your pages.
+- CDN scripts are **version-pinned**, and Chart.js carries a **Subresource Integrity** hash. Tailwind's Play CDN builds its script per request, so it is pinned but can't be hashed.
 - The ports are random (30000–59999), so they never collide with your dev servers.
 
 The link is the credential, so anyone you send it to can open it. It dies when you run `stop` or the machine sleeps or reboots. For a stable URL behind SSO, use a named tunnel with Cloudflare Access instead.
@@ -54,8 +56,8 @@ The link is the credential, so anyone you send it to can open it. It dies when y
 ## Manual use
 
 ```bash
-SLUG=$(bash skills/oca/scripts/slug.sh report)
-cp report.html "${TMPDIR:-/tmp}/oca/site/$SLUG/index.html"
+eval "$(bash skills/oca/scripts/slug.sh report)"   # sets SLUG and DIR
+cp report.html "$DIR/index.html"
 bash skills/oca/scripts/publish.sh   # prints BASE=...
 open "$BASE/$SLUG/"
 bash skills/oca/scripts/stop.sh
@@ -69,6 +71,7 @@ skills/oca/
 ├── assets/base.html         page template
 ├── references/              layout guide + 5 example pages
 └── scripts/                 publish/stop/slug (bash + PowerShell), static servers (perl, node/deno, python, powershell)
+evals/                       skill evals (dev only; not installed with the skill)
 ```
 
 ## License

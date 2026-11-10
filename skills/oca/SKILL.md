@@ -18,7 +18,7 @@ Before writing, open the example in `references/examples/` closest to what you'r
 
 The look is deliberately quiet: white page, near-black text, one column, thin rules. That's what makes these pages read as finished documents instead of templates, so hold the line on it:
 
-- **Tailwind utility classes only** (Play CDN is in the template). Don't invent CSS classes; a `<style>` block is only for something Tailwind can't express. Keeping to utilities keeps every artifact consistent.
+- **Tailwind utility classes only** (Play CDN is in the template). Keep the template's `<script>` tags as they are: the versions are pinned and Chart.js carries an `integrity` hash, so a tampered CDN file is refused. Don't invent CSS classes; a `<style>` block is only for something Tailwind can't express. Keeping to utilities keeps every artifact consistent.
 - **Logical sides.** Use `text-start`/`text-end`, `ps-`/`pe-`, `ms-`/`me-`, `border-s`/`border-e` instead of left/right, so the same markup works in right-to-left pages.
 - **Monochrome.** `neutral-*` greys for everything. Color is reserved for data meaning: `emerald-600` up/good, `red-600` down/bad. Nothing else gets color.
 - **No decoration.** No shadows, gradients, emoji, icons-for-the-sake-of-icons, or cards nested in cards. Hierarchy comes from size, weight, spacing and `border-neutral-200` rules.
@@ -60,15 +60,18 @@ Every page lives under a secret prefix, so `href="/report/"` escapes it and 404s
 Get the slug from the script; don't make it up:
 
 ```bash
-bash scripts/slug.sh <short-kebab-name>      # prints e.g. 3f9a1c-q3-report and creates the folder
+bash scripts/slug.sh <short-kebab-name>
 powershell -ExecutionPolicy Bypass -File scripts\slug.ps1 <short-kebab-name>
 ```
 
-Then write the page to:
+It creates the folder and prints two lines:
 
 ```
-${TMPDIR:-/tmp}/oca/site/<slug>/index.html     (Windows: %TEMP%\oca\site\...)
+SLUG=3f9a1c-q3-report
+DIR=/private/var/folders/.../oca/site/3f9a1c-q3-report
 ```
+
+Write the page to `<DIR>/index.html`, and link to it as `<BASE>/<SLUG>/`. Use the printed `DIR`; don't build the path yourself. The site folder is private to your user (mode 700 in a per-user temp dir), and its location depends on the OS.
 
 The 6 random hex chars in front of the name mean someone holding the link to one artifact can't guess the others. Calling `slug` again with the same name returns the same folder, so updating a page keeps its link. Don't create `site/index.html`: the server never serves the site root, and a listing would hand out every artifact to anyone with one link. Everything in that folder is reachable by whoever has the link, so put only artifact files there; never copy secrets, `.env` files or source trees in.
 

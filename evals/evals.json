@@ -2,7 +2,7 @@
   "skill_name": "oca",
   "languages": ["en", "zh-CN", "hi", "es", "fr", "ar", "bn", "ru", "ja", "de"],
   "common_assertions": [
-    "Page is at ${TMPDIR:-/tmp}/oca/site/<slug>/index.html with a slug from scripts/slug.sh (<6hex>-kebab-case)",
+    "Page is at the DIR printed by scripts/slug.sh (DIR/index.html), with a SLUG (<6hex>-kebab-case)",
     "No {{PLACEHOLDER}} tokens are left from assets/base.html",
     "<html lang> and dir match the Languages table in SKILL.md",
     "Non-Latin pages (zh-CN, ja, hi, bn, ar) load the matching Noto Sans stylesheet",
