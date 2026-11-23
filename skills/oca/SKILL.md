@@ -1,6 +1,6 @@
 ---
 name: oca
-description: Turn any answer into a clean, minimalist HTML page (report, brief, dashboard, chart, comparison table, timeline, long-form text) and share it as a private public-HTTPS link served straight from the user's machine through a Cloudflare quick tunnel. Use this whenever the user says "oca" or asks for an "artifact", a page, a link, a shareable report or dashboard, wants to "show", "send" or "publish" a result, wants charts or a visual summary of data, or wants to expose a local HTML file, even if they don't say "artifact" or "Cloudflare".
+description: Turn any answer into a clean HTML page (report, dashboard, chart, table, timeline, essay) and share it as a private HTTPS link via a Cloudflare quick tunnel. Use whenever the user says "oca" or asks for an artifact, page, link, report, dashboard, chart or to publish/share/show a result. Triggers in many languages - EN artifact, artefact, page, webpage, report, dashboard, publish, share link; PT artefato, artefatos, página, relatório, painel, publicar, compartilhar, link; ES artefacto, página, informe, reporte, tablero, publicar, compartir, enlace; FR artefact, page, rapport, tableau de bord, publier, partager, lien; ZH 工件, 产物, 网页, 页面, 报告, 仪表盘, 发布, 分享, 链接; HI आर्टिफैक्ट, पेज, रिपोर्ट, डैशबोर्ड, प्रकाशित, साझा, लिंक; AR أداة, صفحة, تقرير, لوحة, نشر, مشاركة, رابط; BN আর্টিফ্যাক্ট, পেজ, রিপোর্ট, ড্যাশবোর্ড, প্রকাশ, শেয়ার, লিংক; RU артефакт, страница, отчёт, дашборд, опубликовать, поделиться, ссылка; UR آرٹیفیکٹ, صفحہ, رپورٹ, ڈیش بورڈ, شائع, شیئر, لنک.
 ---
 
 # oca
